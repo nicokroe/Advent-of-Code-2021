@@ -20,15 +20,19 @@ def part1(data: list[str]) -> int:
         for i, c in enumerate(number):
             if c == "1":
                 counter[i] += 1
-    gamma: int = int("".join(
-        "1" if count > len(data) // 2 else "0" for count in counter.values()
-    ), 2)
+    gamma: int = 0
+    data_len = len(data)
+    for k, v in counter.items():
+        if v > data_len // 2:
+            # Bitwise or on gamma with 1 and shift to the left to the
+            # right position. Substract 1 since width is not 0-based.
+            gamma |= 0x01 << width - k - 1
     epsilon = ~gamma & ((1 << gamma.bit_length()) - 1)
     return gamma * epsilon
 
 
 def remove_elements(ratings: list[str], mode: Mode, index: int) -> str:
-    filter_char: str = ""
+    # There should be only one rating left
     if len(ratings) == 1:
         return ratings[0]
     # Count "1" to see if there are more "1"s than "0"s
@@ -38,7 +42,7 @@ def remove_elements(ratings: list[str], mode: Mode, index: int) -> str:
             # Keep all with "1" in case counter is exactl half of len(ratings)
             filter_char = "1" if counter >= len(ratings) / 2 else "0"
         case mode.LEAST:
-            # Keep all with "0" in case counter is exactly the of len(ratings)
+            # Keep all with "0" in case counter is exactly half of len(ratings)
             filter_char = "1" if counter < len(ratings) / 2 else "0"
     ratings = [rating for rating in ratings if rating[index] == filter_char]
     return remove_elements(ratings, mode, index + 1)
