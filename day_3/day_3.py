@@ -31,7 +31,7 @@ def part1(data: list[str]) -> int:
     return gamma * epsilon
 
 
-def remove_elements(ratings: list[str], mode: Mode, index: int) -> str:
+def filter_ratings(ratings: list[str], mode: Mode, index: int) -> str:
     # There should be only one rating left
     if len(ratings) == 1:
         return ratings[0]
@@ -45,14 +45,14 @@ def remove_elements(ratings: list[str], mode: Mode, index: int) -> str:
             # Keep all with "0" in case counter is exactly half of len(ratings)
             filter_char = "1" if counter < len(ratings) / 2 else "0"
     ratings = [rating for rating in ratings if rating[index] == filter_char]
-    return remove_elements(ratings, mode, index + 1)
+    return filter_ratings(ratings, mode, index + 1)
 
 
 def part2(o2: list[str]) -> int:
     # Make a copy for co2
     co2 = o2.copy()
-    o2ret = remove_elements(o2, Mode.MOST, 0)
-    co2ret = remove_elements(co2, Mode.LEAST, 0)
+    o2ret = filter_ratings(o2, Mode.MOST, 0)
+    co2ret = filter_ratings(co2, Mode.LEAST, 0)
     return int(o2ret, 2) * int(co2ret, 2)
 
 
