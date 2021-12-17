@@ -31,7 +31,7 @@ proc part2(commands: seq[string]): int =
         submarine["aim"] -= cmd[1].parseInt
       of "down":
         submarine["aim"] += cmd[1].parseInt
-  return submarine["depth"]*submarine["position"]
+  result = submarine["depth"]*submarine["position"]
 
 proc main(): void =
   let data = parse_input()
